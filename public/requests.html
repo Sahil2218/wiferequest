@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WifeRequest - My Requests</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="top-bar">
+    <span class="user-name" id="user-name"></span>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+  <div class="container">
+    <div class="card" style="margin-bottom: 1.5rem;">
+      <h1>New Request</h1>
+      <p class="subtitle">Ask your cute wife for some funds</p>
+      <form id="request-form">
+        <div class="form-group">
+          <label for="amount">Amount (₹)</label>
+          <input type="number" id="amount" placeholder="How much do you need?" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="reason">Reason</label>
+          <textarea id="reason" rows="3" placeholder="What's it for?" required></textarea>
+        </div>
+        <button type="submit" class="btn" id="submit-btn">Send Request</button>
+      </form>
+      <div id="message" style="display: none;"></div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-bottom: 1rem;">Past Requests</h2>
+      <ul class="request-list" id="request-list"></ul>
+      <p id="empty-state" style="text-align:center; color:#999; display:none;">No requests yet. Send your first one!</p>
+    </div>
+  </div>
+  <script src="/js/requests.js"></script>
+</body>
+</html>
