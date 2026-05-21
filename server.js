@@ -1,4 +1,3 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
@@ -7,8 +6,6 @@ const { initDb } = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-initDb();
 
 app.use(express.json());
 app.use(session({
@@ -26,6 +23,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api', require('./routes/requests'));
 
-app.listen(PORT, () => {
-  console.log(`WifeRequest running at http://localhost:${PORT}`);
+initDb().then(() => {
+  app.listen(PORT, () => {
+    console.log(`WifeRequest running at http://localhost:${PORT}`);
+  });
+}).catch(err => {
+  console.error('Failed to initialize database:', err);
+  process.exit(1);
 });

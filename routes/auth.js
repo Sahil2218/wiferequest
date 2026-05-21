@@ -1,4 +1,3 @@
-// routes/auth.js
 const express = require('express');
 const router = express.Router();
 const crypto = require('crypto');
@@ -9,14 +8,14 @@ router.post('/login', async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'Email is required' });
 
-  const db = getDb();
-  const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email);
-  if (!user) return res.status(404).json({ error: 'Email not found' });
+  const sql = getDb();
+  const users = await sql`SELECT * FROM users WHERE email = ${email}`;
+  if (users.length === 0) return res.status(404).json({ error: 'Email not found' });
 
   const token = crypto.randomBytes(36).toString('base64url');
   const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
-  db.prepare('INSERT INTO magic_links (email, token, expires_at) VALUES (?, ?, ?)').run(email, token, expiresAt);
+  await sql`INSERT INTO magic_links (email, token, expires_at) VALUES (${email}, ${token}, ${expiresAt})`;
 
   try {
     await sendMagicLink(email, token);
@@ -27,22 +26,24 @@ router.post('/login', async (req, res) => {
   res.json({ message: 'Magic link sent! Check your email.' });
 });
 
-router.get('/verify', (req, res) => {
+router.get('/verify', async (req, res) => {
   const { token } = req.query;
   if (!token) return res.status(400).json({ error: 'Token is required' });
 
-  const db = getDb();
-  const link = db.prepare('SELECT * FROM magic_links WHERE token = ? AND used = 0').get(token);
+  const sql = getDb();
+  const links = await sql`SELECT * FROM magic_links WHERE token = ${token} AND used = 0`;
 
-  if (!link) return res.status(401).json({ error: 'Invalid or expired link' });
+  if (links.length === 0) return res.status(401).json({ error: 'Invalid or expired link' });
+  const link = links[0];
 
   const now = new Date();
   const expires = new Date(link.expires_at);
   if (now > expires) return res.status(401).json({ error: 'Link expired' });
 
-  db.prepare('UPDATE magic_links SET used = 1 WHERE id = ?').run(link.id);
+  await sql`UPDATE magic_links SET used = 1 WHERE id = ${link.id}`;
 
-  const user = db.prepare('SELECT * FROM users WHERE email = ?').get(link.email);
+  const users = await sql`SELECT * FROM users WHERE email = ${link.email}`;
+  const user = users[0];
 
   req.session.userId = user.id;
   req.session.email = user.email;
