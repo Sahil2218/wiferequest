@@ -1,0 +1,36 @@
+{
+  "name": "wiferequest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sahil2218/wiferequest.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Sahil2218/wiferequest/issues"
+  },
+  "homepage": "https://github.com/Sahil2218/wiferequest#readme",
+  "dependencies": {
+    "better-sqlite3": "^12.10.0",
+    "crypto-random-string": "^5.0.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "nodemailer": "^8.0.7"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2"
+  }
+}
