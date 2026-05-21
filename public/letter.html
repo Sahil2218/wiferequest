@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WifeRequest - Letter</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="top-bar">
+    <button class="logout-btn" onclick="goBack()">← Back</button>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+  <div class="container">
+    <div class="card">
+      <div class="letter" id="letter-content">
+        Loading...
+      </div>
+      <div id="actions" style="display:none;"></div>
+      <div id="status-display" style="display:none; text-align:center; padding:1rem;"></div>
+    </div>
+  </div>
+  <div class="confetti-container" id="confetti"></div>
+  <script src="/js/letter.js"></script>
+</body>
+</html>
